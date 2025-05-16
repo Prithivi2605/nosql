@@ -85,3 +85,47 @@ public static void main(String[] args) {
 			System.out.println(doc.toJson());
 	}
 
+--------------------------------------------------------------------------------------------------------
+
+4. PHP
+
+<?php
+
+require 'vendor/autoload.php'; 
+use MongoDB\Client;
+
+$client = new Client("mongodb://localhost:27017/");
+$db = $client->school;  
+$collection = $db->students;  
+
+$collection->insertOne([
+    "Name" => "Kishore",
+    "Age" => 19,
+    "Grade" => "A",
+    "Subject" => "Physics",
+    "Attendance" => 88,
+    "Subjects" => ["Philosophy", "Sociology"]
+]);
+
+$collection->insertOne([
+    "Name" => "Alice Johnson",
+    "Age" => 19,
+    "Grade" => "O",
+    "Subject" => "Maths",
+    "Attendance" => 96,
+    "Subjects" => ["History", "Economics"]
+]);
+
+$collection->updateOne(
+    ["Name" => "Kishore"],
+    ['$set' => ["Grade" => "A+"]]
+);
+
+$collection->deleteOne(["Name" => "Alice Johnson"]);
+
+$docs = $collection->find();
+foreach ($docs as $doc) {
+    echo "Name: " . $doc['Name'] . " | Grade: " . $doc['Grade'] . "<br>";
+}
+
+?>
